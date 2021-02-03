@@ -14,16 +14,22 @@ class Position:
         self.price = self.get_current_price()
 
         if action == "buy":
-            self.take_profit = float(open_value) * 1.001
+            self.take_profit = float(open_value) * 1.01
             self.stop_loss = float(open_value) * 0.999
         else:
-            self.take_profit = float(open_value) * 0.999
+            self.take_profit = float(open_value) * 0.99
             self.stop_loss = float(open_value) * 1.001
 
     def update_position(self):
         self.current_value = self.get_current_value()
         self.price = self.get_current_price()
         self.result = self.get_current_result()
+
+        if self.result > 0:
+            if self.action == "buy":
+                self.stop_loss += self.current_value - self.open_value
+            else:
+                self.stop_loss -= self.open_value - self.current_value
 
     def get_current_value(self):
         ticker = self.client.get_product_ticker(self.currency + "-GBP")
@@ -51,7 +57,7 @@ class Position:
         current_value = "Current Value: £{:,.2f}\n".format(self.current_value)
         result = "Result: £{:,.2f}\n".format(self.result)
         amount = "Amount: {}\n".format(self.currency_amount)
-        price = "Price: £{:,.2f}\n".format(self.price)
+        price = "Price: £{:,.2f}".format(self.price)
 
         data = open_time + action + currency + open_value + current_value + result + amount + price
 

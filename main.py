@@ -10,9 +10,9 @@ def main():
 
     initial_currencies = init_currencies(["BTC"])
     account = Account(keys, 0, initial_currencies)
-    account.deposit_currency("BTC", 0.0038)
-    account.deposit_currency("ETH", 0.08)
-    account.deposit_balance(100)
+    account.deposit_currency("BTC", 1)
+    account.deposit_currency("ETH", 1)
+    account.deposit_balance(1000)
 
     account.update_account_value()
     account.starting_value = account.account_value
@@ -26,7 +26,7 @@ def main():
     trading_results = []
     trading_result = 0
 
-    while time.time() - t < 300:
+    while time.time() - t < 600:
         positions = account.check_positions()
 
         for position in positions:
@@ -35,9 +35,9 @@ def main():
             trading_results.append(trading_result)
             open_position(account, result["currency"])
 
-        #account.print_account_summary()
+        # account.print_account_summary()
 
-        time.sleep(5)
+        time.sleep(1)
 
     account.close_all_positions()
     account.print_account_summary()

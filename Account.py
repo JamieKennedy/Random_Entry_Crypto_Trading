@@ -77,9 +77,9 @@ class Account:
                 self.currencies[currency] -= currency_amount
                 self.balance += open_value
 
-        print("opened position")
-        print(self.positions[position_id].get_position_data())
-        print("----------------")
+        # print("opened position")
+        # print(self.positions[position_id].get_position_data())
+        # print("----------------")
 
     def get_id(self):
         position_id = random.randint(1000000, 9999999)
@@ -113,7 +113,6 @@ class Account:
         if result["action"] == "buy":
             self.currencies[result["currency"]] -= result["currency_amount"]
             self.balance += result["current_value"]
-            print("Position closed")
         else:
             self.currencies[result["currency"]] += result["currency_amount"]
             self.balance -= result["current_value"]
