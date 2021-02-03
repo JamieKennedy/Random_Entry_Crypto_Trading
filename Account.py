@@ -70,7 +70,7 @@ class Account:
                 self.currencies[currency] += currency_amount
         if action == "sell":
             if currency_amount > self.currencies[currency]:
-                print("sell value exceed {} balance".format(currency))
+                print("sell value exceeds {} balance".format(currency))
             else:
                 open_value = self.get_value_from_currency_amount(currency, currency_amount)
                 self.positions[position_id] = Position(action, currency, open_value, currency_amount, self.client)
@@ -124,14 +124,28 @@ class Account:
         self.positions.pop(position_id)
         print("----------------")
 
+        return {
+            "currency": result["currency"],
+            "result": result["result"]
+        }
+
     def check_positions(self):
         positions_to_be_closed = []
         self.update_positions()
 
         for position_id in self.positions:
-            t = time.time()
-            if t - self.positions[position_id].open_time > 60:
-                positions_to_be_closed.append(position_id)
+            position = self.positions[position_id]
+
+            if position.action == "buy":
+                if position.current_value >= position.take_profit:
+                    positions_to_be_closed.append(position_id)
+                elif position.current_value <= position.stop_loss:
+                    positions_to_be_closed.append(position_id)
+            else:
+                if position.current_value <= position.take_profit:
+                    positions_to_be_closed.append(position_id)
+                elif position.current_value >= position.stop_loss:
+                    positions_to_be_closed.append(position_id)
 
         return positions_to_be_closed
 

@@ -1,5 +1,4 @@
 import time
-import cbpro as cbp
 
 
 class Position:
@@ -13,6 +12,13 @@ class Position:
         self.currency_amount = currency_amount
         self.client = client
         self.price = self.get_current_price()
+
+        if action == "buy":
+            self.take_profit = float(open_value) * 1.001
+            self.stop_loss = float(open_value) * 0.999
+        else:
+            self.take_profit = float(open_value) * 0.999
+            self.stop_loss = float(open_value) * 1.001
 
     def update_position(self):
         self.current_value = self.get_current_value()
