@@ -1,10 +1,23 @@
-import cbpro as cbp
 import configparser
+from Account import Account
 
 
 def main():
     keys = get_keys("secret/config.txt")
-    print(keys)
+
+    initial_currencies = init_currencies(["BTC", "ETH"])
+    account = Account(keys, 0, initial_currencies)
+
+    print(account.get_ticker("BTC-GBP"))
+
+
+def init_currencies(starting_currencies):
+    currencies = {}
+
+    for currency in starting_currencies:
+        currencies[currency] = 0
+
+    return currencies
 
 
 def get_keys(config_file):
